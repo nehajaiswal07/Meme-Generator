@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Meme Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Bootstrap JS Bundle (Popper included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+</head>
+<body>
+    <div class="container-fluid meme-generator">
+        <header class="text-center py-4">
+            <h1><i class="bi bi-magic"></i> Ultimate Meme Generator</h1>
+            <p class="tagline">Create hilarious memes with advanced editing tools!</p>
+        </header>
+
+        <div class="row">
+            <!-- Left Control Panel -->
+            <div class="col-md-3 control-panel">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5><i class="bi bi-sliders"></i> Editor Tools</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Image Controls -->
+                        <div class="control-section">
+                            <h6><i class="bi bi-image"></i> Image</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Upload Image</label>
+                                <input type="file" id="imageUpload" accept="image/*" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Webcam</label>
+                                <button id="webcamBtn" class="btn btn-outline-primary w-100">
+                                    <i class="bi bi-camera"></i> Take Snapshot
+                                </button>
+                                <div class="webcam-container mt-2 d-none">
+                                    <video id="webcam" autoplay playsinline class="w-100"></video>
+                                    <button id="captureBtn" class="btn btn-success mt-2 w-100">
+                                        <i class="bi bi-camera-fill"></i> Capture
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Templates</label>
+                                <select id="templateSelect" class="form-select">
+                                    <option value="">-- Select Template --</option>
+                                    <option value="doge">Doge</option>
+                                    <option value="grumpycat">Grumpy Cat</option>
+                                    <option value="distractedbf">Distracted Boyfriend</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Text Controls -->
+                        <div class="control-section">
+                            <h6><i class="bi bi-fonts"></i> Text</h6>
+                            <button id="addTextBtn" class="btn btn-primary w-100 mb-3">
+                                <i class="bi bi-text-paragraph"></i> Add Text
+                            </button>
+                            <div class="mb-3">
+                                <label class="form-label">Text Color</label>
+                                <input type="color" id="textColor" value="#ffffff" class="form-control form-control-color">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Outline Color</label>
+                                <input type="color" id="outlineColor" value="#000000" class="form-control form-control-color">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Outline Width</label>
+                                <input type="range" id="outlineWidth" min="0" max="10" value="2" class="form-range">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Font Size</label>
+                                <input type="range" id="fontSize" min="10" max="72" value="30" class="form-range">
+                                <span id="fontSizeValue">30px</span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Font Family</label>
+                                <select id="fontFamily" class="form-select">
+                                    <option value="Impact, sans-serif">Impact</option>
+                                    <option value="Arial, sans-serif">Arial</option>
+                                    <option value="Comic Sans MS, cursive">Comic Sans</option>
+                                    <option value="Times New Roman, serif">Times New Roman</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Drawing Tools -->
+                        <div class="control-section">
+                            <h6><i class="bi bi-brush"></i> Drawing</h6>
+                            <div class="btn-group w-100 mb-3">
+                                <button id="drawBtn" class="btn btn-outline-secondary active">
+                                    <i class="bi bi-pencil"></i> Draw
+                                </button>
+                                <button id="eraseBtn" class="btn btn-outline-secondary">
+                                    <i class="bi bi-eraser"></i> Erase
+                                </button>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Brush Size</label>
+                                <input type="range" id="brushSize" min="1" max="20" value="5" class="form-range">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Brush Color</label>
+                                <input type="color" id="brushColor" value="#000000" class="form-control form-control-color">
+                            </div>
+                            <button id="clearDrawingBtn" class="btn btn-outline-danger w-100">
+                                <i class="bi bi-trash"></i> Clear Drawing
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canvas Area -->
+            <div class="col-md-6 canvas-container">
+                <div class="card shadow">
+                    <div class="card-header  text-white">
+                        <h5><i class="bi bi-palette"></i> Canvas</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="canvas-wrapper">
+                            <canvas id="memeCanvas" width="600" height="600"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Control Panel -->
+            <div class="col-md-3 control-panel">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5><i class="bi bi-gear"></i> Advanced Tools</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filters -->
+                        <div class="control-section">
+                            <h6><i class="bi bi-filters"></i> Filters</h6>
+                            <div class="btn-group-vertical w-100 mb-3">
+                                <button class="filter-btn btn btn-outline-secondary" data-filter="none">None</button>
+                                <button class="filter-btn btn btn-outline-secondary" data-filter="grayscale">Grayscale</button>
+                                <button class="filter-btn btn btn-outline-secondary" data-filter="sepia">Sepia</button>
+                                <button class="filter-btn btn btn-outline-secondary" data-filter="blur">Blur</button>
+                                <button class="filter-btn btn btn-outline-secondary" data-filter="invert">Invert</button>
+                            </div>
+                        </div>
+
+                        <!-- History -->
+                        <div class="control-section">
+                            <h6><i class="bi bi-clock-history"></i> History</h6>
+                            <div class="btn-group w-100 mb-3">
+                                <button id="undoBtn" class="btn btn-secondary" title="Undo">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Undo
+                                </button>
+                                <button id="redoBtn" class="btn btn-secondary" title="Redo">
+                                    <i class="bi bi-arrow-clockwise"></i> Redo
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Share -->
+                        <div class="control-section">
+                            <h6><i class="bi bi-share"></i> Share</h6>
+                            <div class="btn-group-vertical w-100 mb-3">
+                                <button id="shareTwitter" class="btn btn-outline-info">
+                                    <i class="bi bi-twitter"></i> Twitter
+                                </button>
+                                <button id="shareFacebook" class="btn btn-outline-primary">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </button>
+                                <button id="shareReddit" class="btn btn-outline-danger">
+                                    <i class="bi bi-reddit"></i> Reddit
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Export -->
+                        <div class="control-section">
+                            <h6><i class="bi bi-download"></i> Export</h6>
+                            <button id="downloadBtn" class="btn btn-success w-100 mb-2">
+                                <i class="bi bi-download"></i> Download Image
+                            </button>
+                            <button id="saveTemplateBtn" class="btn btn-outline-success w-100">
+                                <i class="bi bi-save"></i> Save as Template
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Meme Generator</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+<!-- Add this in the <head> or before closing </body> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
